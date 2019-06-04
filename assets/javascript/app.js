@@ -23,15 +23,16 @@ function renderButtons() {
         $("#buttons-view").append(buttons);
 
     }
-}
+    displayGifs();
+};
 
     // FUNCTION CREATING AN ON CLICK EVENT LISTNER===========================================
     $("#add-show").on("click", function() {
 
         //GRABS USER SHOW INPUT
-        var tvShow = $("#show-input").val().trim();
+        var userInput = $("#user-input").val().trim();
         //ADDING USER SHOW INPUT TO THE TOPIC ARRAY
-        topics.push(tvShow);
+        topics.push(userInput);
         //CALLING THE RENDER-BUTTONS FUNCTION TO MAKE BUTTONS AND NEW BUTTONS
         renderButtons();
         //ALLOWS USERS TO HIT ENTER KEY INSTEAD OF CLICKING THE SUBMIT BUTTON
@@ -41,64 +42,74 @@ function renderButtons() {
 
 
 //FUNCTION TO DISPLAY GIFS============================================================
-$("#gifs-appears-hear").on("click", function displayGifs() {
+function displayGifs() {
 
-    var show = $(this).attr("data-name");
-    //ADDING GIFS URL + API KEY THAT LIMITS 10 GIFS DISPLAYED PER SHOW
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-            show + "&limit=10&api_key=Xaectgsh7MzqCsvJR5CfR5AeJ9ZxEk53"; 
+  $("button").on("click", function() {
 
-        //CREATING AJAX CALL    
-        $.ajax({
-          url: queryURL,
-          method: "GET"
-        })
-        // CALL THIS FUNCTION -After the data comes back from the API==================
-        .then(function(response) {
-        
-          //console.log(response);
-          //SAVING RESULTS FROM API AS A VARIABLE
-          var results = response.data;
-          //LOOPS THROUGH GIFS AND ADD THESE VARIABLES
-          for (var i = 0; i < results.length; i++) {
-    
-              //CREATING <DIV> TO HOLD RESULTS
-              var showDiv = $("<div>");
-              var p = $("<p>").text("Rating: " + results[i].rating);
-    
-              // CREATING A IMG TAG
-              var showImage = $("<img>")
-                //ADDING THE IMAGE SRC TO RESULTS[i]
-                showImage.attr("src", results[i].images.fixed_height.url);
-    
-              // APPENDING THE P VAR TO THR CHARACTERDIV VAR.
-              showDiv.append(p);
-              // APPENDING THE SHOW IMAGE TO THE SHOW DIV
-              showDiv.append(showImage);
+      var show = $(this).attr("data-name");
+      //ADDING GIFS URL + API KEY THAT LIMITS 10 GIFS DISPLAYED PER SHOW
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+              show + "&api_key=Xaectgsh7MzqCsvJR5CfR5AeJ9ZxEk53&limit=10"; 
 
-              //PREPENDING THE SHOWDIV TO THE "#gifs-appear-here" DIV IN THE INDEX.HTML FILE
-              $("#gifs-appear-here").prepend(showDiv);
+          //CREATING AJAX CALL    
+          $.ajax({
+            url: queryURL,
+            method: "GET"
+          })
+          // CALL THIS FUNCTION -After the data comes back from the API==================
+          .then(function(response) {
+          
+            //console.log(response);
+            //SAVING RESULTS FROM API AS A VARIABLE
+            var results = response.data;
+            //LOOPS THROUGH GIFS AND ADD THESE VARIABLES
+            for (var i = 0; i < results.length; i++) {
+      
+                //CREATING <DIV> TO HOLD RESULTS
+                var showDiv = $('<div class="gif">');
+                var rating = results[i].rating;
+                var p = $("<p>").text("Rating: " + rating);
+      
+                // CREATING A IMG TAG
+                var showImage = $("<img>")
+                  //ADDING THE IMAGE SRC AND ANIMATIONS TO RESULTS[i]
+                  showImage.attr("src", results[i].images.fixed_height.url);
+                  //showImage.attr('src', results[i].images.fixed_height_still.url);
+                  showImage.attr('data-still', results[i].images.fixed_height_still.url);
+                  showImage.attr('data-animate', results[i].images.fixed_height.url);
+                  showImage.attr('data-state', results[i].images.fixed_height_still.url);
 
-          }
-        });
-})
+                // APPENDING THE P VAR TO THR CHARACTERDIV VAR.
+                showDiv.append(p);
+                // APPENDING THE SHOW IMAGE TO THE SHOW DIV
+                showDiv.append(showImage);
 
-//FUNCTION FOR PAUSING GIFS=====================================================================
-$(".gif").on("click", function() {
-    // THE ATTR JQUERY METHOD ALLOWS TO GET OR SET THE VALUE OF ANY ATTRIBUTE ON OUR HTML ELEMENT
-    var state = $(this).attr("data-state");
-    // IF THE CLICKED IMAGES'S STATE IS STILL, UPDATE SRC ATTRIBUTE TO WHAT ITS DATA-ANIMATE VALUE IS
-    if (state === "still") {
-      // THEN SET THE IMAGE'S DATA-STATE TO ANIMATE
-      $(this).attr("src", $(this).attr("data-animate"));
-      $(this).attr("data-state", "animate");
-    } 
-    // ELSE SET SRC TO THE DATA-STILL VALUE
-    else {
-      $(this).attr("src", $(this).attr("data-still"));
-      $(this).attr("data-state", "still");
-    }
-});
+                //PREPENDING THE SHOWDIV TO THE "#gifs-appear-here" DIV IN THE INDEX.HTML FILE
+                $("#gifs-appear-here").prepend(showDiv);
+
+            }
+            //FUNCTION FOR PAUSING GIFS======================================
+            $(".gif").on("click", function() {
+              // THE ATTR JQUERY METHOD ALLOWS TO GET OR SET THE VALUE OF ANY ATTRIBUTE ON OUR HTML ELEMENT
+              var state = $(this).attr("data-state");
+              // IF THE CLICKED IMAGES'S STATE IS STILL, UPDATE SRC ATTRIBUTE TO WHAT ITS DATA-ANIMATE VALUE IS
+              if (state === "still") {
+                // THEN SET THE IMAGE'S DATA-STATE TO ANIMATE
+                $(this).attr("src", $(this).attr("data-animate"));
+                $(this).attr("data-state", "animate");
+              } 
+              // ELSE SET SRC TO THE DATA-STILL VALUE
+              else {
+                $(this).attr("src", $(this).attr("data-still"));
+                $(this).attr("data-state", "still");
+              }
+            });
+
+          });
+  })
+}
+
+
      
 //FUNCTION TO DISPLAY SHOW GIFS===================================================================
 // $(document).on("click", ".show", displayGifs);
