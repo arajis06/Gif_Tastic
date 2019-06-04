@@ -25,13 +25,89 @@ function renderButtons() {
     }
 }
 
-    // CREATING AN ON CLICK EVENT LISTNER
+    // FUNCTION CREATING AN ON CLICK EVENT LISTNER===========================================
     $("#add-show").on("click", function() {
 
         //GRABS USER SHOW INPUT
-        var show = $("#show-input").val().trim();
+        var tvShow = $("#show-input").val().trim();
+        //ADDING USER SHOW INPUT TO THE TOPIC ARRAY
+        topics.push(tvShow);
+        //CALLING THE RENDER-BUTTONS FUNCTION TO MAKE BUTTONS AND NEW BUTTONS
+        renderButtons();
+        //ALLOWS USERS TO HIT ENTER KEY INSTEAD OF CLICKING THE SUBMIT BUTTON
+        return false;
+        
+    })
 
-        }
 
-      });
-    });
+//FUNCTION TO DISPLAY GIFS============================================================
+$("#gifs-appears-hear").on("click", function displayGifs() {
+
+    var show = $(this).attr("data-name");
+    //ADDING GIFS URL + API KEY THAT LIMITS 10 GIFS DISPLAYED PER SHOW
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+            show + "&limit=10&api_key=Xaectgsh7MzqCsvJR5CfR5AeJ9ZxEk53"; 
+
+        //CREATING AJAX CALL    
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        // CALL THIS FUNCTION -After the data comes back from the API==================
+        .then(function(response) {
+        
+          //console.log(response);
+          //SAVING RESULTS FROM API AS A VARIABLE
+          var results = response.data;
+          //LOOPS THROUGH GIFS AND ADD THESE VARIABLES
+          for (var i = 0; i < results.length; i++) {
+    
+              //CREATING <DIV> TO HOLD RESULTS
+              var showDiv = $("<div>");
+              var p = $("<p>").text("Rating: " + results[i].rating);
+    
+              // CREATING A IMG TAG
+              var showImage = $("<img>")
+                //ADDING THE IMAGE SRC TO RESULTS[i]
+                showImage.attr("src", results[i].images.fixed_height.url);
+    
+              // APPENDING THE P VAR TO THR CHARACTERDIV VAR.
+              showDiv.append(p);
+              // APPENDING THE SHOW IMAGE TO THE SHOW DIV
+              showDiv.append(showImage);
+
+              //PREPENDING THE SHOWDIV TO THE "#gifs-appear-here" DIV IN THE INDEX.HTML FILE
+              $("#gifs-appear-here").prepend(showDiv);
+
+          }
+        });
+})
+
+//FUNCTION FOR PAUSING GIFS=====================================================================
+$(".gif").on("click", function() {
+    // THE ATTR JQUERY METHOD ALLOWS TO GET OR SET THE VALUE OF ANY ATTRIBUTE ON OUR HTML ELEMENT
+    var state = $(this).attr("data-state");
+    // IF THE CLICKED IMAGES'S STATE IS STILL, UPDATE SRC ATTRIBUTE TO WHAT ITS DATA-ANIMATE VALUE IS
+    if (state === "still") {
+      // THEN SET THE IMAGE'S DATA-STATE TO ANIMATE
+      $(this).attr("src", $(this).attr("data-animate"));
+      $(this).attr("data-state", "animate");
+    } 
+    // ELSE SET SRC TO THE DATA-STILL VALUE
+    else {
+      $(this).attr("src", $(this).attr("data-still"));
+      $(this).attr("data-state", "still");
+    }
+});
+     
+//FUNCTION TO DISPLAY SHOW GIFS===================================================================
+// $(document).on("click", ".show", displayGifs);
+
+//CALLS RENDERBUTTONS FUNCTION
+renderButtons();
+
+
+
+  
+  
+        
