@@ -63,9 +63,11 @@ function displayGifs() {
                 //CREATING <DIV> TO HOLD RESULTS
                 var showDiv = $('<div class="shows">');
                 var rating = results[i].rating;
-                //GIF RATING
+                //GIF CLICK TO ANIMATE text
+                var clickAnimate = $("<p class = animate>").text("*Click on a image to aimate!");
+                //GIF RATING text
                 var pRating = $("<p>").text("RATING: " + rating.toUpperCase());
-                //GIF TITLE
+                //GIF TITLE text
                 var pTitle = $("<p>").text("TITLE: " + results[i].title.toUpperCase());
                 //GIF URL
                 var gifURL = results[i].images.fixed_height_still.url;
@@ -85,6 +87,8 @@ function displayGifs() {
                 showDiv.append(pTitle);
                 // APPENDING THE SHOW IMAGE TO THE SHOW DIV
                 showDiv.append(showGif);
+                //APPENDING CLICK TO ANIMATE TEXT TO SHOWDIV
+                showDiv.append(clickAnimate);
 
                 //PREPENDING THE SHOWDIV TO THE "#gifs-appear-here" DIV IN THE INDEX.HTML FILE
                 $("#gifs-appear-here").prepend(showDiv);
@@ -112,7 +116,7 @@ function playGifs() {
   }
 };
 
-// FUNCTION CREATING AN ON CLICK EVENT LISTNER===========================================
+// FUNCTION CREATING A ON CLICK CALLBACK===========================================
   $("#add-show").on("click", function() {
     event.preventDefault();
 
