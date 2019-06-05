@@ -1,5 +1,11 @@
 body {
     box-sizing: content-box;
+    background-image: url("../images/tvbackground.jpg");
+}
+.container {
+    background-color: white;
+    border: 4px solid grey;
+    margin-top: 50px;
 }
 
 h1 {

@@ -1,5 +1,5 @@
 // ARRAY OF CHARACTERS
-var topics= ["save by the bell","fresh prince", "full house", "charmed", "living single", "friends", "martin", "family matters", "moesha", "seinfeld", "boy meets world", "buffy the vampire slayer"];
+var topics= ["Save By the Bell","Fresh Prince", "Full House", "Charmed", "Living Single", "Friends", "Martin", "Family Matters", "Moesha", "Seinfeld", "Boy Meets World", "Buffy the Vampire Slayer"];
 
 
 // FUNCTION TO CREATE BUTTONS FOR EACH TOPIC=============================================
@@ -114,20 +114,21 @@ function playGifs() {
 
 // FUNCTION CREATING AN ON CLICK EVENT LISTNER===========================================
   $("#add-show").on("click", function() {
+    event.preventDefault();
 
     //GRABS USER SHOW INPUT
     var userInput = $("#user-input").val().trim();
-
-      if (userInput === topics) {
-      return true;
-      }
-        else {
-          //ADDING USER SHOW INPUT TO THE TOPIC ARRAY
-          topics.push(userInput);
-          //CALLING THE RENDER-BUTTONS FUNCTION TO MAKE BUTTONS AND NEW BUTTONS
-          renderButtons();
-          //ALLOWS USERS TO HIT ENTER KEY INSTEAD OF CLICKING THE SUBMIT BUTTON
-          return false;
+    //CHECKING IF TOPIC ALREADY EXIST IN THE ARRAY
+    if (topics.toString().toLowerCase().indexOf(userInput.toLowerCase()) != -1) {
+      alert("TVshow already exists!");
+    }
+      else {
+        //ADDING USER SHOW INPUT TO THE TOPIC ARRAY
+        topics.push(userInput);
+        //CALLING THE RENDER-BUTTONS FUNCTION TO MAKE BUTTONS AND NEW BUTTONS
+        renderButtons();
+        //ALLOWS USERS TO HIT ENTER KEY INSTEAD OF CLICKING THE SUBMIT BUTTON
+        return false;
         };
     
   })
