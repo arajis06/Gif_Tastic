@@ -22,24 +22,9 @@ function renderButtons() {
         // Adding the buttons to the buttons-view div
         $("#buttons-view").append(buttons);
 
-    }
+    }    
     displayGifs();
 };
-
-    // FUNCTION CREATING AN ON CLICK EVENT LISTNER===========================================
-    $("#add-show").on("click", function() {
-
-        //GRABS USER SHOW INPUT
-        var userInput = $("#user-input").val().trim();
-        //ADDING USER SHOW INPUT TO THE TOPIC ARRAY
-        topics.push(userInput);
-        //CALLING THE RENDER-BUTTONS FUNCTION TO MAKE BUTTONS AND NEW BUTTONS
-        renderButtons();
-        //ALLOWS USERS TO HIT ENTER KEY INSTEAD OF CLICKING THE SUBMIT BUTTON
-        return false;
-        
-    })
-
 
 //FUNCTION TO DISPLAY GIFS============================================================
 function displayGifs() {
@@ -58,7 +43,17 @@ function displayGifs() {
           })
           // CALL THIS FUNCTION -After the data comes back from the API==================
           .then(function(response) {
-          
+          // If no information on topics is found, the alert the user
+            if (response.pagination.total_count == 0) {
+              alert("Sorry, there are no Gifs for this topic");
+
+              var itemindex = topics.indexOf(show);
+              // otherwise display button
+              if (itemindex > -1) {
+              topics.splice(itemindex, 1);
+              renderButtons();
+              }
+            }
             //console.log(response);
             //SAVING RESULTS FROM API AS A VARIABLE
             var results = response.data;
@@ -66,59 +61,82 @@ function displayGifs() {
             for (var i = 0; i < results.length; i++) {
       
                 //CREATING <DIV> TO HOLD RESULTS
-                var showDiv = $('<div class="gif">');
+                var showDiv = $('<div class="shows">');
                 var rating = results[i].rating;
-                var p = $("<p>").text("Rating: " + rating);
-      
+                //GIF RATING
+                var pRating = $("<p>").text("Rating: " + rating.toUpperCase());
+                //GIF TITLE
+                var pTitle = $("<p>").text("Title: " + results[i].title.toUpperCase());
+                //GIF URL
+                var gifURL = results[i].images.fixed_height_still.url;
                 // CREATING A IMG TAG
-                var showImage = $("<img>")
+                var showGif = $("<img>")
                   //ADDING THE IMAGE SRC AND ANIMATIONS TO RESULTS[i]
-                  showImage.attr("src", results[i].images.fixed_height.url);
+                  showGif.attr("src", gifURL);
                   //showImage.attr('src', results[i].images.fixed_height_still.url);
-                  showImage.attr('data-still', results[i].images.fixed_height_still.url);
-                  showImage.attr('data-animate', results[i].images.fixed_height.url);
-                  showImage.attr('data-state', results[i].images.fixed_height_still.url);
+                  showGif.attr('data-still', results[i].images.fixed_height_still.url);
+                  showGif.attr('data-animate', results[i].images.fixed_height.url);
+                  showGif.attr('data-state', 'still');
+                  showGif.addClass ('animate-gif');
 
-                // APPENDING THE P VAR TO THR CHARACTERDIV VAR.
-                showDiv.append(p);
+                // APPENDING THE P VAR TO THR RATING.
+                showDiv.append(pRating);
+                //APPENDING THE P VAR TO THE TILE
+                showDiv.append(pTitle);
                 // APPENDING THE SHOW IMAGE TO THE SHOW DIV
-                showDiv.append(showImage);
+                showDiv.append(showGif);
 
                 //PREPENDING THE SHOWDIV TO THE "#gifs-appear-here" DIV IN THE INDEX.HTML FILE
                 $("#gifs-appear-here").prepend(showDiv);
 
             }
-            //FUNCTION FOR PAUSING GIFS======================================
-            $(".gif").on("click", function() {
-              // THE ATTR JQUERY METHOD ALLOWS TO GET OR SET THE VALUE OF ANY ATTRIBUTE ON OUR HTML ELEMENT
-              var state = $(this).attr("data-state");
-              // IF THE CLICKED IMAGES'S STATE IS STILL, UPDATE SRC ATTRIBUTE TO WHAT ITS DATA-ANIMATE VALUE IS
-              if (state === "still") {
-                // THEN SET THE IMAGE'S DATA-STATE TO ANIMATE
-                $(this).attr("src", $(this).attr("data-animate"));
-                $(this).attr("data-state", "animate");
-              } 
-              // ELSE SET SRC TO THE DATA-STILL VALUE
-              else {
-                $(this).attr("src", $(this).attr("data-still"));
-                $(this).attr("data-state", "still");
-              }
-            });
-
+            
           });
+          
   })
 }
+//FUNCTION FOR PLAY OR PAUSING GIFS======================================
+function playGifs() {
+  // THE ATTR JQUERY METHOD ALLOWS TO GET OR SET THE VALUE OF ANY ATTRIBUTE ON OUR HTML ELEMENT
+  var state = $(this).attr("data-state");
+  // IF THE CLICKED IMAGES'S STATE IS STILL, UPDATE SRC ATTRIBUTE TO WHAT ITS DATA-ANIMATE VALUE IS
+  if (state === "still") {
+    // THEN SET THE IMAGE'S DATA-STATE TO ANIMATE
+    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("data-state", "animate");
+  } 
+  // ELSE SET SRC TO THE DATA-STILL VALUE
+  else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("data-state", "still");
+  }
+};
 
+// FUNCTION CREATING AN ON CLICK EVENT LISTNER===========================================
+  $("#add-show").on("click", function() {
 
-     
-//FUNCTION TO DISPLAY SHOW GIFS===================================================================
-// $(document).on("click", ".show", displayGifs);
+    //GRABS USER SHOW INPUT
+    var userInput = $("#user-input").val().trim();
 
-//CALLS RENDERBUTTONS FUNCTION
+      if (userInput === topics) {
+      return true;
+      }
+        else {
+          //ADDING USER SHOW INPUT TO THE TOPIC ARRAY
+          topics.push(userInput);
+          //CALLING THE RENDER-BUTTONS FUNCTION TO MAKE BUTTONS AND NEW BUTTONS
+          renderButtons();
+          //ALLOWS USERS TO HIT ENTER KEY INSTEAD OF CLICKING THE SUBMIT BUTTON
+          return false;
+        };
+    
+  })
+
+//EVENT LISTNER TO DISPLAY SHOW GIFS========================================================
+ // Click on show button to display Gifs and other info from API
+ $(document).on("click", ".show", displayGifs);
+ // Click on the Gif image to animate or make it still
+ $(document).on("click", ".animate-gif", playGifs);
+
+//CALLS RENDERBUTTONS FUNCTION======================================================
 renderButtons();
-
-
-
-  
-  
-        

@@ -13,25 +13,38 @@
 <body>
     <div class = "container">
 
-        <h1>The Gifs That Keeps On Giving Our Favorite TV Shows Some Love!</h1>
-        <div id="buttons-view"></div>
-
+        <div class = "heading text-center">
+            <h1>The Gifs That Keeps On Giving Our Favorite TV Shows Some Love!</h1>
+                <h6>*Click on a TVshow below to see some cool GIFs.</h6>
+        </div>
         <br>
 
-        <!-- USERS INPUT FIELD -->
-        <form id="user-form">
-            <label for="user-input">Add a TV Show!</label>
-            <input type="text" id="user-input">
-            <br>
-            <!-- BUTTON TO TRIGGER A NEW MOVIE TO BE ADDED -->
-            <input id="add-show" type="submit" value="Add Show">
-        </form>
+        <div class = "row">
+            <div class="col-lg-9 text-center">
+                <div id="buttons-view"></div>
+            </div>
 
         <br>
-    
-        <!-- GIFS WILL DISPLAY HERE -->
-        <div id="gifs-appear-here"></div>
+        
+            <div class="col-lg-3">
+                <!-- USERS INPUT FIELD -->
+                <form id="user-form">
+                    <label for="user-input">Add a TV Show!</label>
+                    <input type="text" id="user-input">
+                    <br>
+                    <!-- BUTTON TO TRIGGER A NEW MOVIE TO BE ADDED -->
+                    <input id="add-show" type="submit" value="Add Show">
+                </form>
+            </div>
+        </div>
 
+        <br>
+        <div class = "row">
+            <div class="col-lg-9">
+            <!-- Info from API call will be added here -->
+            <!-- GIFS WILL DISPLAY HERE -->
+            <div id="gifs-appear-here"></div>
+        </div>
         <!--JQUERY LINK & JAVASCRIPT FILE  -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="assets/javascript/app.js"></script>
