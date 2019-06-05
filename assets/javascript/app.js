@@ -64,9 +64,9 @@ function displayGifs() {
                 var showDiv = $('<div class="shows">');
                 var rating = results[i].rating;
                 //GIF RATING
-                var pRating = $("<p>").text("Rating: " + rating.toUpperCase());
+                var pRating = $("<p>").text("RATING: " + rating.toUpperCase());
                 //GIF TITLE
-                var pTitle = $("<p>").text("Title: " + results[i].title.toUpperCase());
+                var pTitle = $("<p>").text("TITLE: " + results[i].title.toUpperCase());
                 //GIF URL
                 var gifURL = results[i].images.fixed_height_still.url;
                 // CREATING A IMG TAG
