@@ -4,8 +4,8 @@ Type of Project: API
 
 Theme: TV Show GIFs
 
-IMPORTANT LINKS
-//**add-here**
+ LINK:
+ https://arajis06.github.io/Gif_Tastic/
 
 Description of Application
 GIFTastic is a responsive website that displays GIF images from the GIPHY website using an API. The application works as follows:
