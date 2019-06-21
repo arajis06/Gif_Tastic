@@ -1,11 +1,14 @@
 # Gif_Tastic
-### Creator: Alexis Rajis
-### Type of Project: API
+#### Creator: Alexis Rajis
+#### Type of Project: API
 
-### Theme: TV Show GIFs
+#### Theme: TV Show GIFs
 
-### LINK:
+#### LINK:
  https://arajis06.github.io/Gif_Tastic/
+ 
+![sreenshot](https://user-images.githubusercontent.com/49252572/59931700-9533cc00-9413-11e9-9750-5a23bec5d988.png)
+
 
 ## Description of Application
 GIFTastic is a responsive website that displays GIF images from the GIPHY website using an API. The application works as follows:
